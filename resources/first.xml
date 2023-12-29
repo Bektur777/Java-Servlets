@@ -10,5 +10,5 @@
         <header name="content-type" value="text/html"/>
         <header name="accept" value="application/json"/>
     </header>
-    <body type="text/plain/"/>
+    <body type="text/plain"/>
 </request>
