@@ -27,6 +27,26 @@ public class HttpServer {
     }
 
     private void processSocket(Socket socket) {
+        try (socket;
+             DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream())) {
+//            step 1: handle request
+            System.out.println("Request: " + new String(inputStream.readNBytes(400)));
 
+//            step 2: handle response
+            byte[] body = Files.readAllBytes(Path.of("resources", "example.html"));
+            byte[] headers = """
+                    HTTP/1.1 200 OK
+                    content-type: text/html
+                    content-length: %s
+                    """.formatted(body.length).getBytes();
+
+            outputStream.write(headers);
+            outputStream.write(System.lineSeparator().getBytes());
+            outputStream.write(body);
+        } catch (IOException e) {
+            // TODO: log error message
+            e.printStackTrace();
+        }
     }
 }
