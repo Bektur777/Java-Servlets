@@ -7,20 +7,30 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
 
 public class HttpServer {
 
     private final int port;
 
-    public HttpServer(int port) {
+    private final ExecutorService executorService;
+
+    private boolean stopped;
+
+    public HttpServer(int port, ExecutorService executorService) {
         this.port = port;
+        this.executorService = executorService;
     }
 
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-            Socket socket = serverSocket.accept();
-            processSocket(socket);
+
+            while (!stopped) {
+                Socket socket = serverSocket.accept();
+                System.out.println("Socket accepted");
+                executorService.submit(() -> processSocket(socket));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,5 +58,9 @@ public class HttpServer {
             // TODO: log error message
             e.printStackTrace();
         }
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 }
