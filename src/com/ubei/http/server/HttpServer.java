@@ -7,7 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
 
@@ -17,9 +19,9 @@ public class HttpServer {
 
     private boolean stopped;
 
-    public HttpServer(int port, ExecutorService executorService) {
+    public HttpServer(int port, int poolSize) {
         this.port = port;
-        this.executorService = executorService;
+        this.executorService = Executors.newFixedThreadPool(poolSize);
     }
 
     public void run() {
