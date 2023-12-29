@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.file.Path;
 
 public class HttpClientExample {
@@ -19,10 +21,10 @@ public class HttpClientExample {
                 .build();
 
         HttpRequest request2 = HttpRequest.newBuilder(URI.create("https://www.googel.com"))
-                .POST(HttpRequest.BodyPublishers.ofFile(Path.of("path", "to", "file")))
+                .POST(BodyPublishers.ofFile(Path.of("path", "to", "file")))
                 .build();
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
         System.out.println(response.body());
         System.out.println(response.headers());
