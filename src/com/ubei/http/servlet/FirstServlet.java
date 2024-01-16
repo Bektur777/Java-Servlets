@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.Map;
 
 @WebServlet("/first")
 public class FirstServlet extends HttpServlet {
@@ -21,11 +22,14 @@ public class FirstServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Enumeration<String> headerNames = req.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String s = headerNames.nextElement();
-            System.out.println(req.getHeader(s));
-        }
+//        Enumeration<String> headerNames = req.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String s = headerNames.nextElement();
+//            System.out.println(req.getHeader(s));
+//        }
+        String param = req.getParameter("param");
+        Map<String, String[]> parameterMap = req.getParameterMap();
+        System.out.println();
 
         resp.setContentType("text/html; charset=UTF-8");
         resp.setHeader("token", "12345");
