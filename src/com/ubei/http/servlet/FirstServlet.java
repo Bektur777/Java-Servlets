@@ -39,6 +39,12 @@ public class FirstServlet extends HttpServlet {
     }
 
     @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, String[]> parameterMap = req.getParameterMap();
+        System.out.println(parameterMap);
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
     }
