@@ -18,8 +18,8 @@ public class TicketDao implements Dao<Long, Ticket> {
 
     private static final String FIND_ALL_BY_FLIGHT_ID = """
         SELECT *
-        FROM tickets
-        WHERE id=?
+        FROM ticket
+        WHERE flight_id=?
     """;
 
     private TicketDao() {
