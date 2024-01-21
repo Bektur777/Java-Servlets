@@ -1,4 +1,4 @@
-package com.ubei.http.dto.TicketDto;
+package com.ubei.http.dto;
 
 import java.util.Objects;
 

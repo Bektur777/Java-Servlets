@@ -1,7 +1,7 @@
 package com.ubei.http.service;
 
 import com.ubei.http.dao.TicketDao;
-import com.ubei.http.dto.TicketDto.TicketDto;
+import com.ubei.http.dto.TicketDto;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class TicketService {
     private TicketService() {
     }
 
-    public List<TicketDto> findAllFlightByFlightId(Long flightId) {
+    public List<TicketDto> findAllByFlightId(Long flightId) {
         return ticketDao.findAllByFlightId(flightId).stream()
                 .map(ticket -> new TicketDto(
                         ticket.getId(),
