@@ -3,13 +3,17 @@ package com.ubei.http.dao;
 import com.ubei.http.entity.Flight;
 import com.ubei.http.entity.FlightStatus;
 import com.ubei.http.util.ConnectionManager;
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
 public class FlightDao implements Dao<Long, Flight> {
 
     private static final FlightDao INSTANCE = new FlightDao();
@@ -19,10 +23,8 @@ public class FlightDao implements Dao<Long, Flight> {
             FROM flight
             """;
 
-    private FlightDao() {
-    }
-
     @Override
+    @SneakyThrows
     public List<Flight> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
@@ -33,8 +35,6 @@ public class FlightDao implements Dao<Long, Flight> {
             }
 
             return flights;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
