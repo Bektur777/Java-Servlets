@@ -5,18 +5,18 @@ import java.util.Objects;
 
 public class Ticket {
     private Long id;
-    private String passenger_no;
+    private String passengerNo;
     private String passenger_name;
-    private Long flight_id;
-    private String seat_no;
+    private Long flightId;
+    private String seatNo;
     private BigDecimal cost;
 
-    public Ticket(Long id, String passenger_no, String passenger_name, Long flight_id, String seat_no, BigDecimal cost) {
+    public Ticket(Long id, String passengerNo, String passenger_name, Long flightId, String seatNo, BigDecimal cost) {
         this.id = id;
-        this.passenger_no = passenger_no;
+        this.passengerNo = passengerNo;
         this.passenger_name = passenger_name;
-        this.flight_id = flight_id;
-        this.seat_no = seat_no;
+        this.flightId = flightId;
+        this.seatNo = seatNo;
         this.cost = cost;
     }
 
@@ -28,12 +28,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getPassenger_no() {
-        return passenger_no;
+    public String getPassengerNo() {
+        return passengerNo;
     }
 
-    public void setPassenger_no(String passenger_no) {
-        this.passenger_no = passenger_no;
+    public void setPassengerNo(String passengerNo) {
+        this.passengerNo = passengerNo;
     }
 
     public String getPassenger_name() {
@@ -44,20 +44,20 @@ public class Ticket {
         this.passenger_name = passenger_name;
     }
 
-    public Long getFlight_id() {
-        return flight_id;
+    public Long getFlightId() {
+        return flightId;
     }
 
-    public void setFlight_id(Long flight_id) {
-        this.flight_id = flight_id;
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
     }
 
-    public String getSeat_no() {
-        return seat_no;
+    public String getSeatNo() {
+        return seatNo;
     }
 
-    public void setSeat_no(String seat_no) {
-        this.seat_no = seat_no;
+    public void setSeatNo(String seatNo) {
+        this.seatNo = seatNo;
     }
 
     public BigDecimal getCost() {
@@ -85,10 +85,10 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", passenger_no='" + passenger_no + '\'' +
+                ", passengerNo='" + passengerNo + '\'' +
                 ", passenger_name='" + passenger_name + '\'' +
-                ", flight_id=" + flight_id +
-                ", seat_no='" + seat_no + '\'' +
+                ", flightId=" + flightId +
+                ", seatNo='" + seatNo + '\'' +
                 ", cost=" + cost +
                 '}';
     }
