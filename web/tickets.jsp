@@ -1,4 +1,6 @@
-<%--
+<%@ page import="com.ubei.http.dto.TicketDto" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.ubei.http.service.TicketService" %><%--
   Created by IntelliJ IDEA.
   User: ubei0
   Date: 24.01.2024
@@ -11,6 +13,16 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Hello, world!</h1>
+    <h1>Купленные билеты:</h1>
+    <ul>
+        <%
+            TicketService ticketService = TicketService.getInstance();
+            Long flightId = Long.valueOf(request.getParameter("flightId"));
+            List<TicketDto> tickets = ticketService.findAllByFlightId(flightId);
+            for (TicketDto ticket: tickets) {
+                out.write(String.format("<li>%s</li>", ticket.getSeatNo()));
+            }
+        %>
+    </ul>
 </body>
 </html>
