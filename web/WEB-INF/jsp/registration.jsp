@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Registration</title>
@@ -26,12 +28,19 @@
         </label><br>
         <label for="role">Role:
             <select name="role" id="role">
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
+                <c:forEach var="userRole" items="${requestScope.roles}">
+                    <option value="${userRole}">
+                            ${fn:substring(userRole, 0, 1)}${fn:toLowerCase(fn:substring(userRole, 1, fn:length(userRole)))}
+                    </option>
+                </c:forEach>
             </select><br>
         </label><br>
-        <input type="radio" name="gender" value="MALE"> Male <br>
-        <input type="radio" name="gender" value="FEMALE"> Female <br>
+        <label for="gender">Gender: <br>
+        <c:forEach var="userGender" items="${requestScope.genders}">
+                <input type="radio" name="gender" id="gender" value="${userGender}">
+                ${fn:substring(userGender, 0, 1)}${fn:toLowerCase(fn:substring(userGender, 1, fn:length(userGender)))}<br>
+        </c:forEach>
+        </label>
         <button type="submit">Send</button>
     </form>
 </body>
