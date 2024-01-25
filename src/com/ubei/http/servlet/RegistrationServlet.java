@@ -1,5 +1,6 @@
 package com.ubei.http.servlet;
 
+import com.ubei.http.dto.CreateUserDto;
 import com.ubei.http.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,5 +21,17 @@ public class RegistrationServlet extends HttpServlet {
 
         req.getRequestDispatcher(JspHelper.getPath("registration"))
                 .forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CreateUserDto.builder()
+                .name(req.getParameter("name"))
+                .birthday(req.getParameter("birth"))
+                .email(req.getParameter("email"))
+                .password(req.getParameter("password"))
+                .role(req.getParameter("role"))
+                .gender(req.getParameter("gender"))
+                .build();
     }
 }
