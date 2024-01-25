@@ -1,6 +1,7 @@
 package com.ubei.http.servlet;
 
 import com.ubei.http.service.FlightService;
+import com.ubei.http.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,20 +19,9 @@ public class FlightServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        req.setAttribute("flights", flightService.findAll());
 
-        PrintWriter printWriter = resp.getWriter();
-        printWriter.write("<h1>Список перелетов:</h1>");
-        printWriter.write("<ul>");
-        flightService.findAll().forEach(flightDto -> {
-            printWriter.write("""
-                    <li>
-                        <a href="/tickets?flightId=%d">%s</a>
-                    </li>
-                    """.formatted(flightDto.getId(), flightDto.getDescription()));
-        });
-        printWriter.write("</ul>");
-
+        req.getRequestDispatcher(JspHelper.getPath("flights"))
+                .forward(req, resp);
     }
 }
