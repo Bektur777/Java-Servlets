@@ -2,18 +2,18 @@ package com.ubei.http.service;
 
 import com.ubei.http.dao.FlightDao;
 import com.ubei.http.dto.FlightDto;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FlightService {
 
     private static final FlightService INSTANCE = new FlightService();
     private final FlightDao flightDao = FlightDao.getInstance();
-
-    private FlightService() {
-    }
 
     public List<FlightDto> findAll() {
         return flightDao.findAll().stream()

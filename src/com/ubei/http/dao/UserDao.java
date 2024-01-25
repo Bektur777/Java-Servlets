@@ -2,6 +2,8 @@ package com.ubei.http.dao;
 
 import com.ubei.http.entity.User;
 import com.ubei.http.util.ConnectionManager;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDao implements Dao<Integer, User>{
 
     private static final UserDao INSTANCE = new UserDao();

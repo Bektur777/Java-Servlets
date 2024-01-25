@@ -2,18 +2,18 @@ package com.ubei.http.service;
 
 import com.ubei.http.dao.TicketDao;
 import com.ubei.http.dto.TicketDto;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TicketService {
 
     private static final TicketService INSTANCE = new TicketService();
     private final TicketDao ticketDao = TicketDao.getInstance();
-
-    private TicketService() {
-    }
 
     public List<TicketDto> findAllByFlightId(Long flightId) {
         return ticketDao.findAllByFlightId(flightId).stream()
