@@ -2,6 +2,7 @@ package com.ubei.http.validator;
 
 import com.ubei.http.dto.CreateUserDto;
 import com.ubei.http.entity.Gender;
+import com.ubei.http.util.LocalDateFormatter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +10,13 @@ import lombok.NoArgsConstructor;
 public class CreateUserValidator implements Validator<CreateUserDto> {
 
     private static final CreateUserValidator createUserValidator = new CreateUserValidator();
+
     @Override
     public ValidationResult isValid(CreateUserDto object) {
         ValidationResult validationResult = new ValidationResult();
+        if (!LocalDateFormatter.isValid(object.getBirthday())) {
+            validationResult.add(Error.of("invalid.birthday", "Birthday is invalid"));
+        }
         if (Gender.find(object.getGender()).isPresent()) {
             validationResult.add(Error.of("invalid.gender", "Gender is invalid"));
         }
