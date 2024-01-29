@@ -1,6 +1,8 @@
 package com.ubei.http.servlet;
 
 import com.ubei.http.dto.CreateUserDto;
+import com.ubei.http.exception.ValidationException;
+import com.ubei.http.service.UserService;
 import com.ubei.http.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +16,8 @@ import java.util.List;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
+    private static final UserService userService = UserService.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("roles", List.of("USER", "ADMIN"));
@@ -25,13 +29,19 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CreateUserDto.builder()
-                .name(req.getParameter("name"))
-                .birthday(req.getParameter("birth"))
-                .email(req.getParameter("email"))
-                .password(req.getParameter("password"))
-                .role(req.getParameter("role"))
-                .gender(req.getParameter("gender"))
-                .build();
+        try {
+            userService.create(CreateUserDto.builder()
+                    .name(req.getParameter("name"))
+                    .birthday(req.getParameter("birth"))
+                    .email(req.getParameter("email"))
+                    .password(req.getParameter("password"))
+                    .role(req.getParameter("role"))
+                    .gender(req.getParameter("gender"))
+                    .build());
+            resp.sendRedirect("/login");
+        } catch (ValidationException e) {
+            req.setAttribute("errors", e.getErrors());
+            doGet(req, resp);
+        }
     }
 }
