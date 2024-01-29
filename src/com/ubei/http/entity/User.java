@@ -14,6 +14,7 @@ public class User {
 
     Integer id;
     String name;
+    String image;
     LocalDate birthday;
     String email;
     String password;
