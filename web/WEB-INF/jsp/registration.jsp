@@ -13,6 +13,7 @@
     <title>Registration</title>
 </head>
 <body>
+    <img width="400px" src="${pageContext.request.contextPath}/images/users/AtomicHeart_sample.jpg" alt="">
     <form action="${pageContext.request.contextPath}/registration" method="post" enctype="multipart/form-data">
         <label for="name">Name:
             <input type="text" name="name" id="name">
