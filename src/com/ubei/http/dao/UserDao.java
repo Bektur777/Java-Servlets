@@ -1,27 +1,48 @@
 package com.ubei.http.dao;
 
+import com.ubei.http.entity.Gender;
+import com.ubei.http.entity.Role;
 import com.ubei.http.entity.User;
 import com.ubei.http.util.ConnectionManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserDao implements Dao<Integer, User>{
+public class UserDao implements Dao<Integer, User> {
 
     private static final UserDao INSTANCE = new UserDao();
 
     private static final String SAVE_SQL =
             "INSERT INTO users (name, birthday, email, password, role, gender, image) VALUES " +
                     "(?, ?, ?, ?, ?, ?, ?)";
+
+    public static final String GET_BY_EMAIL_AND_PASSWORD =
+            "SELECT * FROM users WHERE email = ? AND password = ?";
+
+    @SneakyThrows
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_AND_PASSWORD);) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = buildEntity(resultSet);
+            }
+
+            return Optional.ofNullable(user);
+        }
+    }
 
     @Override
     public List<User> findAll() {
@@ -64,6 +85,19 @@ public class UserDao implements Dao<Integer, User>{
 
             return entity;
         }
+    }
+
+    private static User buildEntity(ResultSet resultSet) throws SQLException {
+        return User.builder()
+                .id(resultSet.getObject("id", Integer.class))
+                .email(resultSet.getObject("email", String.class))
+                .birthday(resultSet.getObject("birthday", Date.class).toLocalDate())
+                .name(resultSet.getObject("name", String.class))
+                .role(Role.valueOf(resultSet.getObject("role", String.class)))
+                .gender(Gender.valueOf(resultSet.getObject("gender", String.class)))
+                .password(resultSet.getObject("password", String.class))
+                .image(resultSet.getObject("image", String.class))
+                .build();
     }
 
     public static UserDao getInstance() {
