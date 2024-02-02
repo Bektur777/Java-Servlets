@@ -2,14 +2,18 @@ package com.ubei.http.service;
 
 import com.ubei.http.dao.UserDao;
 import com.ubei.http.dto.CreateUserDto;
+import com.ubei.http.dto.UserDto;
 import com.ubei.http.entity.User;
 import com.ubei.http.exception.ValidationException;
+import com.ubei.http.mapper.CreateUserMapper;
 import com.ubei.http.mapper.UserMapper;
 import com.ubei.http.validator.CreateUserValidator;
 import com.ubei.http.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
@@ -18,8 +22,14 @@ public class UserService {
 
     private final CreateUserValidator createUserValidator = CreateUserValidator.getInstance();
     private final UserDao userDao = UserDao.getInstance();
+    private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final UserMapper userMapper = UserMapper.getInstance();
     private final ImageService imageService = ImageService.getInstance();
+
+    public Optional<UserDto> login(String email, String password) {
+        return userDao.findByEmailAndPassword(email, password)
+                .map(userMapper::mapFrom);
+    }
 
     @SneakyThrows
     public Integer create(CreateUserDto userDto) {
@@ -27,7 +37,7 @@ public class UserService {
         if (!valid.isValid()) {
             throw new ValidationException(valid.getErrors());
         }
-        User user = userMapper.mapFrom(userDto);
+        User user = createUserMapper.mapFrom(userDto);
         imageService.upload(user.getImage(), userDto.getImage().getInputStream());
         userDao.save(user);
 
